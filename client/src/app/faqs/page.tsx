@@ -74,7 +74,7 @@ export default function FAQsPage() {
         </div>
       </main>
 
-      <Footer onSubscribeToast={() => {}} />
+      <Footer />
     </div>
   );
 }

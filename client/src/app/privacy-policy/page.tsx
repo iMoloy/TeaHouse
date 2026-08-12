@@ -58,7 +58,7 @@ export default function PrivacyPolicyPage() {
         </div>
       </main>
 
-      <Footer onSubscribeToast={() => {}} />
+      <Footer />
     </div>
   );
 }

@@ -75,7 +75,7 @@ export default function ProductsPage() {
         />
       </main>
 
-      <Footer onSubscribeToast={() => {}} />
+      <Footer />
 
       <ProductModal
         product={selectedProduct}

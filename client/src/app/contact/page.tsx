@@ -107,7 +107,7 @@ export default function ContactPage() {
         </div>
       </main>
 
-      <Footer onSubscribeToast={() => {}} />
+      <Footer />
     </div>
   );
 }

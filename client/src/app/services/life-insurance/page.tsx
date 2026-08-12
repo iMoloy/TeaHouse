@@ -48,7 +48,7 @@ export default function LifeInsurancePage() {
         </div>
       </main>
 
-      <Footer onSubscribeToast={() => {}} />
+      <Footer />
     </div>
   );
 }

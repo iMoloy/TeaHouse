@@ -3,21 +3,18 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Coffee, ChevronRight, Facebook, Twitter, Instagram } from 'lucide-react';
+import { toast } from 'react-toastify';
 
-interface FooterProps {
-  onSubscribeToast: (msg: string) => void;
-}
-
-export const Footer: React.FC<FooterProps> = ({ onSubscribeToast }) => {
+export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
-      onSubscribeToast('⚠️ Please enter a valid email address!');
+      toast.warn('⚠️ Please enter a valid email address!');
       return;
     }
-    onSubscribeToast('🎉 Thank you for subscribing to Tea House newsletter!');
+    toast.success('🎉 Thank you for subscribing to Tea House newsletter!');
     setEmail('');
   };
 

@@ -48,7 +48,7 @@ export default function HouseInsurancePage() {
         </div>
       </main>
 
-      <Footer onSubscribeToast={() => {}} />
+      <Footer />
     </div>
   );
 }

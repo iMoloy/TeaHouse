@@ -13,20 +13,22 @@ import { NewsSection } from '@/components/NewsSection';
 import { Footer } from '@/components/Footer';
 import { CartDrawer } from '@/components/CartDrawer';
 import { AuthModal } from '@/components/AuthModal';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
+import { toast } from 'react-toastify';
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [newsList, setNewsList] = useState<News[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Load initial cart from localStorage
+    // Load saved cart
     const savedCart = localStorage.getItem('next_teahouse_cart');
     if (savedCart) {
       try {
@@ -34,16 +36,23 @@ export default function Home() {
       } catch (e) {}
     }
 
-    // Fetch dynamic data from Express/MongoDB backend
+    // Fetch dynamic data with loading indicator
     async function loadData() {
-      const [prodsData, revsData, newsData] = await Promise.all([
-        fetchProducts(),
-        fetchReviews(),
-        fetchNews()
-      ]);
-      setProducts(prodsData);
-      setReviews(revsData);
-      setNewsList(newsData);
+      setIsLoading(true);
+      try {
+        const [prodsData, revsData, newsData] = await Promise.all([
+          fetchProducts(),
+          fetchReviews(),
+          fetchNews()
+        ]);
+        setProducts(prodsData);
+        setReviews(revsData);
+        setNewsList(newsData);
+      } catch (err) {
+        toast.error('⚠️ Could not connect to live database. Loaded local backup menu.');
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     loadData();
@@ -52,13 +61,6 @@ export default function Home() {
   const saveCart = (newCart: CartItem[]) => {
     setCart(newCart);
     localStorage.setItem('next_teahouse_cart', JSON.stringify(newCart));
-  };
-
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 4000);
   };
 
   const handleAddToCart = (product: Product, quantity = 1) => {
@@ -77,16 +79,17 @@ export default function Home() {
           name: product.name,
           price: product.price,
           image: product.image,
-          quantity: quantity
+          quantity
         }
       ];
     }
 
     saveCart(updatedCart);
-    showToast(`Added ${quantity}x "${product.name}" to your cart!`);
+    toast.success(`🛒 Added ${quantity}x "${product.name}" to your cart!`);
   };
 
   const handleUpdateQuantity = (id: string, delta: number) => {
+    const itemToUpdate = cart.find(i => i.id === id);
     const updatedCart = cart
       .map((item) => {
         if (item.id === id) {
@@ -98,11 +101,22 @@ export default function Home() {
       .filter(Boolean) as CartItem[];
 
     saveCart(updatedCart);
+    if (itemToUpdate) {
+      if (delta > 0) {
+        toast.info(`Increased quantity of "${itemToUpdate.name}"`);
+      } else {
+        toast.warn(`Decreased quantity of "${itemToUpdate.name}"`);
+      }
+    }
   };
 
   const handleRemoveCartItem = (id: string) => {
+    const itemToRemove = cart.find(i => i.id === id);
     const updatedCart = cart.filter((item) => item.id !== id);
     saveCart(updatedCart);
+    if (itemToRemove) {
+      toast.warn(`🗑️ Removed "${itemToRemove.name}" from shopping bag.`);
+    }
   };
 
   const handleCheckout = async () => {
@@ -116,7 +130,7 @@ export default function Home() {
       totalAmount
     });
 
-    showToast('🎉 Order placed successfully! Thank you for ordering from Tea House.');
+    toast.success('🎉 Thank you! Your Tea House order has been placed successfully.');
     saveCart([]);
     setIsCartOpen(false);
   };
@@ -126,35 +140,55 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col justify-between relative">
       
-      {/* Toast Notification Container */}
-      {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 bg-gray-900 text-white text-sm font-semibold px-5 py-3.5 rounded-2xl shadow-2xl border border-gray-700 animate-bounce">
-          {toastMessage}
-        </div>
-      )}
-
-      {/* Main Sections */}
       <div>
         <Navbar
           cartCount={totalCartCount}
-          onOpenCart={() => setIsCartOpen(true)}
-          onOpenAuth={() => setIsAuthOpen(true)}
+          onOpenCart={() => {
+            setIsCartOpen(true);
+            toast.info("Opened Shopping Bag");
+          }}
+          onOpenAuth={() => {
+            setIsAuthOpen(true);
+          }}
         />
 
         <main>
           <Hero />
-          <FeaturedProducts
-            products={products}
-            onSelectProduct={(product) => setSelectedProduct(product)}
-            onAddToCart={(product) => handleAddToCart(product)}
-          />
+          
+          {isLoading ? (
+            <div className="py-20">
+              <LoadingSpinner message="Steeping fresh organic teas from MongoDB..." size="lg" />
+            </div>
+          ) : (
+            <FeaturedProducts
+              products={products}
+              isLoading={false}
+              onSelectProduct={(product) => setSelectedProduct(product)}
+              onAddToCart={(product) => handleAddToCart(product)}
+            />
+          )}
+
           <FreshQuality />
-          <SuperClients reviews={reviews} />
-          <NewsSection newsList={newsList} />
+          
+          {isLoading ? (
+            <div className="py-12">
+              <LoadingSpinner message="Loading client reviews..." size="md" />
+            </div>
+          ) : (
+            <SuperClients reviews={reviews} />
+          )}
+
+          {isLoading ? (
+            <div className="py-12">
+              <LoadingSpinner message="Loading news & events..." size="md" />
+            </div>
+          ) : (
+            <NewsSection newsList={newsList} />
+          )}
         </main>
       </div>
 
-      <Footer onSubscribeToast={showToast} />
+      <Footer />
 
       {/* Modals & Drawers */}
       <ProductModal
@@ -175,7 +209,6 @@ export default function Home() {
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
-        onToast={showToast}
       />
 
     </div>

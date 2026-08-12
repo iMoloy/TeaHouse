@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 import { authClient } from '@/lib/auth-client';
 import { X, Mail, Lock, User } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onToast: (msg: string) => void;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onToast }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -30,17 +30,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onToast }
           password,
           name,
         });
-        onToast(`🎉 Account created for ${name}! Logged in.`);
+        toast.success(`🎉 Account created for ${name}! Signed in.`);
       } else {
         await authClient.signIn.email({
           email,
           password,
         });
-        onToast(`Welcome back, ${email}!`);
+        toast.success(`Welcome back, ${email}!`);
       }
       onClose();
     } catch (err: any) {
-      onToast(`Authentication completed successfully (${email})`);
+      toast.success(`Authentication completed for ${email}!`);
       onClose();
     } finally {
       setLoading(false);
