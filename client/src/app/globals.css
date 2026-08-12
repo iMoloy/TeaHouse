@@ -1,0 +1,35 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background-color: #FAFAFA;
+  color: #1C1C1C;
+  overflow-x: hidden;
+}
+
+.btn-gradient {
+  background: linear-gradient(93.84deg, #FF8938 0.78%, #FF0000 100%);
+  color: #FFFFFF;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(93.84deg, #FF0000 0.78%, #FF8938 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(255, 100, 50, 0.3);
+}
+
+.glass-badge {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+.client-section-bg {
+  background: linear-gradient(90deg, #FF8938 0%, #FF0000 100%);
+}
