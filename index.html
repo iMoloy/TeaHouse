@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Tea House - Premium Tea Shop</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS & DaisyUI -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5/daisyui.css" rel="stylesheet" type="text/css">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#FAFAFA] text-gray-900 antialiased selection:bg-amber-500 selection:text-white">
+
+  <!-- ==================== HEADER / NAVBAR ==================== -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+    <div class="w-11/12 max-w-7xl mx-auto py-4 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-2 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105">
+          <i class="fa-solid fa-mug-hot text-xl"></i>
+        </div>
+        <span class="text-2xl font-extrabold tracking-tight text-gray-900">Tea<span class="text-orange-600">House</span></span>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 font-semibold text-sm text-gray-600">
+        <a href="#hero" class="hover:text-orange-600 transition">Home</a>
+        <a href="#featured-products" class="hover:text-orange-600 transition">Products</a>
+        <a href="#fresh-quality" class="hover:text-orange-600 transition">About Us</a>
+        <a href="#super-clients" class="hover:text-orange-600 transition">Reviews</a>
+        <a href="#news" class="hover:text-orange-600 transition">News & Events</a>
+      </nav>
+
+      <!-- Cart Button & Mobile Menu Toggle -->
+      <div class="flex items-center gap-3">
+        <button id="open-cart-btn" class="relative p-3 rounded-full bg-gray-100 hover:bg-orange-50 text-gray-800 hover:text-orange-600 transition" title="Shopping Cart">
+          <i class="fa-solid fa-basket-shopping text-lg"></i>
+          <span id="cart-badge-count" class="hidden absolute -top-1 -right-1 bg-orange-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow-md">0</span>
+        </button>
+
+        <button id="mobile-menu-toggle" class="md:hidden p-3 rounded-full bg-gray-100 text-gray-800 hover:bg-gray-200 transition">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-6 py-4 space-y-3 font-semibold text-gray-700">
+      <a href="#hero" class="block hover:text-orange-600">Home</a>
+      <a href="#featured-products" class="block hover:text-orange-600">Products</a>
+      <a href="#fresh-quality" class="block hover:text-orange-600">About Us</a>
+      <a href="#super-clients" class="block hover:text-orange-600">Reviews</a>
+      <a href="#news" class="block hover:text-orange-600">News & Events</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="hero" class="w-11/12 max-w-7xl mx-auto py-12 lg:py-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
+      
+      <!-- Left Content -->
+      <div class="space-y-6 text-center lg:text-left">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-[1.15]">
+          It's good <br class="hidden sm:inline">tea time at The <br class="hidden sm:inline"><span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">Tea House</span>
+        </h1>
+        <p class="text-gray-500 text-base lg:text-lg max-w-lg mx-auto lg:mx-0 leading-relaxed">
+          Explore Importance of Taste, Variety and Healthy Options. Total Satisfaction To Your Taste Buds.
+        </p>
+        <div class="pt-2 flex justify-center lg:justify-start">
+          <a href="#featured-products" class="btn-gradient px-8 py-4 rounded-2xl font-bold flex items-center gap-3 text-base shadow-xl group">
+            <span>Explore More</span>
+            <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center transition-transform group-hover:translate-x-1">
+              <i class="fa-solid fa-arrow-right text-xs"></i>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Image Banner -->
+      <div class="relative flex justify-center items-center">
+        <div class="relative w-full max-w-lg">
+          <img src="./images/banner.png" alt="Tea House Banner" class="w-full h-auto object-contain drop-shadow-2xl">
+          
+          <!-- Floating Trustpilot Card -->
+          <div class="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 glass-badge rounded-2xl p-4 flex items-center gap-3 shadow-xl animate-bounce-slow">
+            <div class="text-amber-500 text-2xl">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div>
+              <h4 class="text-xl font-extrabold text-gray-900">5.00</h4>
+              <p class="text-xs text-gray-500 font-medium">Trust Pilot Ratings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== FEATURED PRODUCTS ==================== -->
+    <section id="featured-products" class="w-11/12 max-w-7xl mx-auto py-16">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Our Featured Products</h2>
+        <p class="text-gray-500 text-sm sm:text-base leading-relaxed">
+          There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words.
+        </p>
+      </div>
+
+      <!-- Filter Controls & Search -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
+        
+        <!-- Category Filter Buttons -->
+        <div id="category-filters" class="flex flex-wrap justify-center gap-2">
+          <button data-category="all" class="filter-btn bg-gradient text-white px-5 py-2.5 rounded-full font-bold text-sm shadow-md transition">All Teas</button>
+          <button data-category="milk-tea" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2.5 rounded-full font-bold text-sm border border-gray-200 transition">Milk Tea</button>
+          <button data-category="black-tea" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2.5 rounded-full font-bold text-sm border border-gray-200 transition">Black Tea</button>
+          <button data-category="lemon-tea" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2.5 rounded-full font-bold text-sm border border-gray-200 transition">Lemon Tea</button>
+          <button data-category="green-tea" class="filter-btn bg-white text-gray-700 hover:bg-gray-100 px-5 py-2.5 rounded-full font-bold text-sm border border-gray-200 transition">Green Tea</button>
+        </div>
+
+        <!-- Search Box -->
+        <div class="relative w-full md:w-72">
+          <input type="text" id="product-search-input" placeholder="Search tea blends..." class="w-full bg-white border border-gray-200 rounded-full pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:border-orange-500 shadow-sm">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-sm"></i>
+        </div>
+
+      </div>
+
+      <!-- Product Grid (Populated via JS) -->
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+    </section>
+
+    <!-- ==================== GREAT TEA, FRESHLY PRESENTED ==================== -->
+    <section id="fresh-quality" class="w-11/12 max-w-7xl mx-auto py-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
+      
+      <!-- Left 4-Grid Layout -->
+      <div class="grid grid-cols-2 gap-5">
+        <div class="bg-gradient-to-br from-pink-100 to-red-100 rounded-3xl min-h-[160px] flex items-center justify-center p-6 shadow-sm">
+          <div class="text-center">
+            <span class="text-3xl font-extrabold text-orange-600 block">100%</span>
+            <span class="text-xs text-gray-600 font-bold uppercase tracking-wider">Organic Leaves</span>
+          </div>
+        </div>
+        
+        <div class="rounded-3xl overflow-hidden shadow-sm">
+          <img src="./images/fresh-1.png" alt="Fresh Tea Blend" class="w-full h-full object-cover">
+        </div>
+        
+        <div class="rounded-3xl overflow-hidden shadow-sm">
+          <img src="./images/fresh-2.png" alt="Brewed Tea Cup" class="w-full h-full object-cover">
+        </div>
+        
+        <div class="bg-stone-200 rounded-3xl min-h-[160px] flex items-center justify-center p-6 shadow-sm">
+          <div class="text-center">
+            <span class="text-3xl font-extrabold text-gray-800 block">25+</span>
+            <span class="text-xs text-gray-600 font-bold uppercase tracking-wider">Unique Blends</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Content Description -->
+      <div class="space-y-6">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
+          Great Tea, Freshly <br class="hidden sm:inline">Presented
+        </h2>
+        <p class="text-gray-500 text-sm sm:text-base leading-relaxed">
+          The Tea House process starts with our passion for quality tea. From picking raw leaves to brewing the tea to perfection, every step is carefully crafted to deliver the richest flavor to your cup.
+        </p>
+
+        <div class="space-y-4 pt-2">
+          <div>
+            <h4 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <i class="fa-solid fa-leaf text-orange-500"></i> Unique Taste
+            </h4>
+            <p class="text-gray-500 text-sm mt-1 leading-relaxed">
+              A complex and subtle play of flavors that brings a refreshing feeling to your daily life.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <i class="fa-solid fa-award text-orange-500"></i> Premium Quality
+            </h4>
+            <p class="text-gray-500 text-sm mt-1 leading-relaxed">
+              Premium Quality tea leaves sourced directly from sustainable gardens around the world.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== MEET OUR SUPER CLIENTS ==================== -->
+    <section id="super-clients" class="w-11/12 max-w-7xl mx-auto my-16 rounded-[35px] client-section-bg p-8 lg:p-16 text-white grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
+      
+      <!-- Left Info -->
+      <div class="space-y-6 z-10 text-center lg:text-left">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
+          Meet Our Super <br class="hidden lg:inline">Clients
+        </h2>
+        <p class="text-white/80 text-sm sm:text-base leading-relaxed max-w-md mx-auto lg:mx-0">
+          There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+        </p>
+        <div>
+          <a href="#featured-products" class="inline-block bg-white text-orange-600 font-bold px-8 py-3.5 rounded-full shadow-lg hover:bg-gray-100 transition">
+            Show All
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Testimonial Slider Container -->
+      <div class="relative z-10">
+        <div id="testimonial-slider-container"></div>
+        
+        <!-- Controls & Indicators -->
+        <div class="flex items-center justify-between mt-6 max-w-xl mx-auto">
+          <div class="flex gap-2">
+            <button onclick="prevTestimonial()" class="w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition">
+              <i class="fa-solid fa-chevron-left text-sm"></i>
+            </button>
+            <button onclick="nextTestimonial()" class="w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition">
+              <i class="fa-solid fa-chevron-right text-sm"></i>
+            </button>
+          </div>
+
+          <div id="testimonial-dots" class="flex gap-2 items-center"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== NEWS & EVENTS ==================== -->
+    <section id="news" class="w-11/12 max-w-7xl mx-auto py-16">
+      
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">News & Events</h2>
+        <p class="text-gray-500 text-sm sm:text-base leading-relaxed">
+          There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.
+        </p>
+      </div>
+
+      <!-- News Grid (Populated via JS) -->
+      <div id="news-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-gradient-to-b from-pink-50/50 to-orange-50/80 pt-16 pb-8 border-t border-gray-100">
+    <div class="w-11/12 max-w-7xl mx-auto">
+      
+      <!-- Top Callout Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pb-12 border-b border-gray-200">
+        <a href="#" class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-md">
+            <i class="fa-solid fa-mug-hot text-xl"></i>
+          </div>
+          <span class="text-2xl font-extrabold text-gray-900">Tea<span class="text-orange-600">House</span></span>
+        </a>
+
+        <div class="flex items-center gap-4">
+          <span class="text-gray-600 font-bold text-sm">Ready to get started?</span>
+          <a href="#featured-products" class="btn-gradient px-6 py-2.5 rounded-full font-bold text-sm shadow">Get Started</a>
+        </div>
+      </div>
+
+      <!-- 4 Columns Footer Links -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 py-12 border-b border-gray-200">
+        
+        <div>
+          <h4 class="font-extrabold text-gray-900 mb-4">Quick Links</h4>
+          <ul class="space-y-2.5 text-sm text-gray-500">
+            <li><a href="#" class="hover:text-orange-600">Home</a></li>
+            <li><a href="#fresh-quality" class="hover:text-orange-600">About Us</a></li>
+            <li><a href="#featured-products" class="hover:text-orange-600">Products</a></li>
+            <li><a href="#" class="hover:text-orange-600">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-extrabold text-gray-900 mb-4">Our Service</h4>
+          <ul class="space-y-2.5 text-sm text-gray-500">
+            <li><a href="#" class="hover:text-orange-600">Life Insurance</a></li>
+            <li><a href="#" class="hover:text-orange-600">Car Insurance</a></li>
+            <li><a href="#" class="hover:text-orange-600">Health Insurance</a></li>
+            <li><a href="#" class="hover:text-orange-600">House Insurance</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-extrabold text-gray-900 mb-4">Help</h4>
+          <ul class="space-y-2.5 text-sm text-gray-500">
+            <li><a href="#" class="hover:text-orange-600">FAQs</a></li>
+            <li><a href="#" class="hover:text-orange-600">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-extrabold text-gray-900 mb-4">Subscribe to our newsletter</h4>
+          <form id="newsletter-form" class="space-y-3">
+            <div class="relative">
+              <input type="email" id="newsletter-email" placeholder="Email address" required class="w-full bg-white border border-gray-200 rounded-full px-5 py-3 text-sm focus:outline-none focus:border-orange-500 pr-12 shadow-sm">
+              <button type="submit" class="absolute right-1.5 top-1.5 w-9 h-9 rounded-full btn-gradient flex items-center justify-center text-white text-xs">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </form>
+
+          <div class="flex items-center gap-4 mt-6 text-gray-400 text-lg">
+            <a href="#" class="hover:text-orange-600"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="hover:text-orange-600"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" class="hover:text-orange-600"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Copyright Note -->
+      <div class="text-center pt-8 text-xs text-gray-400">
+        © 2027 Tea House - All rights reserved.
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS & DRAWERS ==================== -->
+
+  <!-- Product Detail Quick View Modal -->
+  <div id="product-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+    <div class="relative bg-white rounded-3xl p-6 md:p-8 max-w-2xl w-full shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+      <button onclick="closeProductModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="product-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- News Article Detail Modal -->
+  <div id="news-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+    <div class="relative bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
+      <button onclick="closeNewsModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center font-bold">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="news-modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Shopping Cart Drawer / Modal -->
+  <div id="cart-modal" class="hidden fixed inset-0 z-50 flex justify-end">
+    <div id="cart-overlay" class="absolute inset-0 bg-black/40 backdrop-blur-xs"></div>
+    <div class="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col justify-between p-6 z-10">
+      
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
+          <h3 class="text-xl font-extrabold text-gray-900 flex items-center gap-2">
+            <i class="fa-solid fa-basket-shopping text-orange-500"></i> Your Shopping Bag
+          </h3>
+          <button id="close-cart-btn" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div id="cart-items-list" class="max-h-[60vh] overflow-y-auto pr-1"></div>
+      </div>
+
+      <div class="pt-4 border-t border-gray-100">
+        <div class="flex justify-between items-center mb-2 text-sm text-gray-500">
+          <span>Subtotal</span>
+          <span id="cart-subtotal" class="font-bold text-gray-900">$0.00</span>
+        </div>
+        <div class="flex justify-between items-center mb-4 text-lg font-extrabold text-gray-900">
+          <span>Total Amount</span>
+          <span id="cart-total" class="text-orange-600">$0.00</span>
+        </div>
+        <button onclick="checkoutCart()" class="w-full btn-gradient py-3.5 rounded-full font-bold text-center shadow-lg">
+          Proceed to Checkout
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- App Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
