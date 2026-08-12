@@ -7,13 +7,17 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-8.10-47A248?logo=mongodb)](https://www.mongodb.com/)
 [![Better Auth](https://img.shields.io/badge/Better--Auth-1.1-orange)](https://better-auth.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![AI Generated](https://img.shields.io/badge/Built_With-Antigravity_AI-purple)](https://deepmind.google/)
 
 A modern, 100% dynamic, full-stack tea shop landing page and e-commerce application built with **Next.js 15 (App Router)**, **React 19**, **TypeScript**, **Express.js**, **MongoDB (Mongoose)**, and **Better Auth**.
 
 > 🤖 **AI Assistance Disclaimer**: This project was fully architected, designed, and implemented using **Google DeepMind Antigravity AI** as an autonomous AI pair programmer.
 > 
-> 📋 **Implementation Plan**: For step-by-step roadmap details, view the [IMPLEMENTATION_PLAN.md](file:///mnt/File/Work/PH%20Projects/TeaHouse/IMPLEMENTATION_PLAN.md).
+> 📋 **Project Links**:
+> - [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) - Step-by-Step Architecture & Roadmap Plan
+> - [ANTIGRAVITY.md](./ANTIGRAVITY.md) / [CLAUDE.md](./CLAUDE.md) - AI Agent Guidelines & Coding Standards
+> - [LICENSE](./LICENSE) - Open Source MIT License
 
 ---
 
@@ -26,7 +30,8 @@ A modern, 100% dynamic, full-stack tea shop landing page and e-commerce applicat
 - **⭐ Super Clients Carousel**: Auto-rotating testimonial slider with manual controls and indicator dots.
 - **📰 News & Articles Modal**: Dynamic news grid featuring brewing guides and eco-friendly announcements with full-article reader modal.
 - **🔐 Better Auth Authentication**: User registration and login modal with session management.
-- **🔔 Toast Notification System**: Animated feedback for cart additions, email validation, and checkout completion.
+- **🔔 Toast Notification System**: Animated `react-toastify` feedback for cart additions, email validation, and checkout completion.
+- **⌛ Loading Spinner & Skeletons**: Glassmorphic tea cup spinner and product skeleton loaders during async API fetching.
 
 ---
 
@@ -34,11 +39,16 @@ A modern, 100% dynamic, full-stack tea shop landing page and e-commerce applicat
 
 ```
 TeaHouse/
+├── ANTIGRAVITY.md               # AI Agent Guidelines & Coding Standards
+├── CLAUDE.md                    # Alias AI Rules File
 ├── IMPLEMENTATION_PLAN.md      # Detailed Step-by-Step AI Architecture Plan
+├── LICENSE                     # Open Source MIT License
+├── README.md                   # Project Documentation & Badges
+│
 ├── client/                     # Next.js 15 Frontend
 │   ├── src/
-│   │   ├── app/                # App Router Layout & Home Page
-│   │   ├── components/         # React UI Components (Navbar, Hero, Products, Carousel, Modals)
+│   │   ├── app/                # App Router Layout & Pages (Home, About, Products, Services, FAQs, Contact)
+│   │   ├── components/         # React UI Components (Navbar, Hero, Products, Carousel, Modals, Spinner)
 │   │   ├── lib/                # REST API Client & Better Auth Client SDK
 │   │   └── types/              # TypeScript Interfaces
 │   ├── public/images/          # High-resolution Tea House assets
@@ -142,4 +152,4 @@ npm run dev
 ## 📜 License & Credits
 
 - Built with ❤️ using **Google DeepMind Antigravity AI**.
-- Licensed under the MIT License.
+- Released under the [MIT License](./LICENSE).
