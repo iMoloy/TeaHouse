@@ -7,8 +7,13 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-8.10-47A248?logo=mongodb)](https://www.mongodb.com/)
 [![Better Auth](https://img.shields.io/badge/Better--Auth-1.1-orange)](https://better-auth.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+[![AI Generated](https://img.shields.io/badge/Built_With-Antigravity_AI-purple)](https://deepmind.google/)
 
 A modern, 100% dynamic, full-stack tea shop landing page and e-commerce application built with **Next.js 15 (App Router)**, **React 19**, **TypeScript**, **Express.js**, **MongoDB (Mongoose)**, and **Better Auth**.
+
+> 🤖 **AI Assistance Disclaimer**: This project was fully architected, designed, and implemented using **Google DeepMind Antigravity AI** as an autonomous AI pair programmer.
+> 
+> 📋 **Implementation Plan**: For step-by-step roadmap details, view the [IMPLEMENTATION_PLAN.md](file:///mnt/File/Work/PH%20Projects/TeaHouse/IMPLEMENTATION_PLAN.md).
 
 ---
 
@@ -29,6 +34,7 @@ A modern, 100% dynamic, full-stack tea shop landing page and e-commerce applicat
 
 ```
 TeaHouse/
+├── IMPLEMENTATION_PLAN.md      # Detailed Step-by-Step AI Architecture Plan
 ├── client/                     # Next.js 15 Frontend
 │   ├── src/
 │   │   ├── app/                # App Router Layout & Home Page
@@ -133,6 +139,7 @@ npm run dev
 
 ---
 
-## 📜 License
+## 📜 License & Credits
 
-This project is licensed under the MIT License.
+- Built with ❤️ using **Google DeepMind Antigravity AI**.
+- Licensed under the MIT License.
