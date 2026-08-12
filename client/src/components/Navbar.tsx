@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { ShoppingBag, Menu, X, User, Coffee } from 'lucide-react';
 
 interface NavbarProps {
@@ -17,20 +18,20 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onOpenAut
       <div className="w-11/12 max-w-7xl mx-auto py-4 flex items-center justify-between">
         
         {/* Brand Logo */}
-        <a href="#" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2 group">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-md transition-transform group-hover:scale-105">
             <Coffee className="w-6 h-6" />
           </div>
           <span className="text-2xl font-extrabold tracking-tight text-gray-900">Tea<span className="text-orange-600">House</span></span>
-        </a>
+        </Link>
 
         {/* Desktop Links */}
         <nav className="hidden md:flex items-center gap-8 font-semibold text-sm text-gray-600">
-          <a href="#hero" className="hover:text-orange-600 transition">Home</a>
-          <a href="#featured-products" className="hover:text-orange-600 transition">Products</a>
-          <a href="#fresh-quality" className="hover:text-orange-600 transition">About Us</a>
-          <a href="#super-clients" className="hover:text-orange-600 transition">Reviews</a>
-          <a href="#news" className="hover:text-orange-600 transition">News & Events</a>
+          <Link href="/" className="hover:text-orange-600 transition">Home</Link>
+          <Link href="/products" className="hover:text-orange-600 transition">Products</Link>
+          <Link href="/about" className="hover:text-orange-600 transition">About Us</Link>
+          <Link href="/faqs" className="hover:text-orange-600 transition">FAQs</Link>
+          <Link href="/contact" className="hover:text-orange-600 transition">Contact</Link>
         </nav>
 
         {/* Action Buttons */}
@@ -69,11 +70,11 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onOpenAut
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4 space-y-3 font-semibold text-gray-700">
-          <a href="#hero" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Home</a>
-          <a href="#featured-products" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Products</a>
-          <a href="#fresh-quality" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">About Us</a>
-          <a href="#super-clients" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Reviews</a>
-          <a href="#news" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">News & Events</a>
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Home</Link>
+          <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Products</Link>
+          <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">About Us</Link>
+          <Link href="/faqs" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">FAQs</Link>
+          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Contact</Link>
         </div>
       )}
     </header>

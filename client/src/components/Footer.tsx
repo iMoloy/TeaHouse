@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { Coffee, ChevronRight, Facebook, Twitter, Instagram } from 'lucide-react';
 
 interface FooterProps {
@@ -25,16 +26,16 @@ export const Footer: React.FC<FooterProps> = ({ onSubscribeToast }) => {
       <div className="w-11/12 max-w-7xl mx-auto">
         
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pb-12 border-b border-gray-200">
-          <a href="#" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-md">
               <Coffee className="w-6 h-6" />
             </div>
             <span className="text-2xl font-extrabold text-gray-900">Tea<span className="text-orange-600">House</span></span>
-          </a>
+          </Link>
 
           <div className="flex items-center gap-4">
             <span className="text-gray-600 font-bold text-sm">Ready to get started?</span>
-            <a href="#featured-products" className="btn-gradient px-6 py-2.5 rounded-full font-bold text-sm shadow">Get Started</a>
+            <Link href="/products" className="btn-gradient px-6 py-2.5 rounded-full font-bold text-sm shadow">Get Started</Link>
           </div>
         </div>
 
@@ -42,28 +43,28 @@ export const Footer: React.FC<FooterProps> = ({ onSubscribeToast }) => {
           <div>
             <h4 className="font-extrabold text-gray-900 mb-4">Quick Links</h4>
             <ul className="space-y-2.5 text-sm text-gray-500">
-              <li><a href="#" className="hover:text-orange-600">Home</a></li>
-              <li><a href="#fresh-quality" className="hover:text-orange-600">About Us</a></li>
-              <li><a href="#featured-products" className="hover:text-orange-600">Products</a></li>
-              <li><a href="#" className="hover:text-orange-600">Privacy Policy</a></li>
+              <li><Link href="/" className="hover:text-orange-600">Home</Link></li>
+              <li><Link href="/about" className="hover:text-orange-600">About Us</Link></li>
+              <li><Link href="/products" className="hover:text-orange-600">Products</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-orange-600">Privacy Policy</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-extrabold text-gray-900 mb-4">Our Service</h4>
             <ul className="space-y-2.5 text-sm text-gray-500">
-              <li><a href="#" className="hover:text-orange-600">Life Insurance</a></li>
-              <li><a href="#" className="hover:text-orange-600">Car Insurance</a></li>
-              <li><a href="#" className="hover:text-orange-600">Health Insurance</a></li>
-              <li><a href="#" className="hover:text-orange-600">House Insurance</a></li>
+              <li><Link href="/services/life-insurance" className="hover:text-orange-600">Life Insurance</Link></li>
+              <li><Link href="/services/car-insurance" className="hover:text-orange-600">Car Insurance</Link></li>
+              <li><Link href="/services/health-insurance" className="hover:text-orange-600">Health Insurance</Link></li>
+              <li><Link href="/services/house-insurance" className="hover:text-orange-600">House Insurance</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-extrabold text-gray-900 mb-4">Help</h4>
             <ul className="space-y-2.5 text-sm text-gray-500">
-              <li><a href="#" className="hover:text-orange-600">FAQs</a></li>
-              <li><a href="#" className="hover:text-orange-600">Contact Us</a></li>
+              <li><Link href="/faqs" className="hover:text-orange-600">FAQs</Link></li>
+              <li><Link href="/contact" className="hover:text-orange-600">Contact Us</Link></li>
             </ul>
           </div>
 
