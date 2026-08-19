@@ -4,13 +4,24 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { ShoppingBag, Menu, X, User, Coffee } from 'lucide-react';
 
+interface UserSession {
+  name: string;
+  email: string;
+}
+
 interface NavbarProps {
   cartCount: number;
+  currentUser: UserSession | null;
   onOpenCart: () => void;
   onOpenAuth: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onOpenAuth }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  cartCount,
+  currentUser,
+  onOpenCart,
+  onOpenAuth
+}) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -36,13 +47,27 @@ export const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart, onOpenAut
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3">
-          <button 
-            onClick={onOpenAuth}
-            className="p-2.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition"
-            title="User Account"
-          >
-            <User className="w-5 h-5" />
-          </button>
+          {currentUser ? (
+            <button
+              onClick={onOpenAuth}
+              className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-orange-50 hover:bg-orange-100 border border-orange-200 text-gray-800 transition"
+              title="View Profile"
+            >
+              <div className="relative w-7 h-7 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 text-white font-black text-xs flex items-center justify-center shadow">
+                {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-500 border border-white rounded-full" />
+              </div>
+              <span className="text-xs font-bold truncate max-w-[90px]">{currentUser.name}</span>
+            </button>
+          ) : (
+            <button
+              onClick={onOpenAuth}
+              className="p-2.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition"
+              title="Sign In / Register"
+            >
+              <User className="w-5 h-5" />
+            </button>
+          )}
 
           <button 
             onClick={onOpenCart} 

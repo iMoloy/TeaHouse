@@ -16,6 +16,11 @@ import { AuthModal } from '@/components/AuthModal';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { toast } from 'react-toastify';
 
+interface UserSession {
+  name: string;
+  email: string;
+}
+
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -23,6 +28,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -33,6 +39,14 @@ export default function Home() {
     if (savedCart) {
       try {
         setCart(JSON.parse(savedCart));
+      } catch (e) {}
+    }
+
+    // Load saved user session
+    const savedUser = localStorage.getItem('next_teahouse_user');
+    if (savedUser) {
+      try {
+        setCurrentUser(JSON.parse(savedUser));
       } catch (e) {}
     }
 
@@ -124,8 +138,8 @@ export default function Home() {
 
     const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     await submitOrder({
-      customerName: 'Valued Guest',
-      customerEmail: 'guest@teahouse.com',
+      customerName: currentUser ? currentUser.name : 'Valued Guest',
+      customerEmail: currentUser ? currentUser.email : 'guest@teahouse.com',
       items: cart,
       totalAmount
     });
@@ -143,6 +157,7 @@ export default function Home() {
       <div>
         <Navbar
           cartCount={totalCartCount}
+          currentUser={currentUser}
           onOpenCart={() => {
             setIsCartOpen(true);
             toast.info("Opened Shopping Bag");
@@ -209,6 +224,15 @@ export default function Home() {
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
+        currentUser={currentUser}
+        onLoginSuccess={(user) => {
+          setCurrentUser(user);
+          localStorage.setItem('next_teahouse_user', JSON.stringify(user));
+        }}
+        onLogoutSuccess={() => {
+          setCurrentUser(null);
+          localStorage.removeItem('next_teahouse_user');
+        }}
       />
 
     </div>

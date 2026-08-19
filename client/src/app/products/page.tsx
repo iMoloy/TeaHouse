@@ -59,7 +59,7 @@ export default function ProductsPage() {
         </div>
       )}
 
-      <Navbar cartCount={cart.reduce((s, i) => s + i.quantity, 0)} onOpenCart={() => setIsCartOpen(true)} onOpenAuth={() => {}} />
+      <Navbar currentUser={null} cartCount={cart.reduce((s, i) => s + i.quantity, 0)} onOpenCart={() => setIsCartOpen(true)} onOpenAuth={() => {}} />
 
       <main className="w-11/12 max-w-7xl mx-auto py-8">
         <div className="mb-4">

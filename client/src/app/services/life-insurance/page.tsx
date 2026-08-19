@@ -9,7 +9,7 @@ import { Footer } from '@/components/Footer';
 export default function LifeInsurancePage() {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#FAFAFA]">
-      <Navbar cartCount={0} onOpenCart={() => {}} onOpenAuth={() => {}} />
+      <Navbar currentUser={null} cartCount={0} onOpenCart={() => {}} onOpenAuth={() => {}} />
 
       <main className="w-11/12 max-w-4xl mx-auto py-12">
         <div className="mb-6">
