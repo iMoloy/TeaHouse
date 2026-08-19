@@ -3,17 +3,29 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
-import { Product } from '@/types';
-import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchAllOrders, updateOrderStatus } from '@/lib/api';
-import { Plus, Edit2, Trash2, Package, RefreshCw, Layers, CheckCircle, Clock, Truck } from 'lucide-react';
+import { CartDrawer } from '@/components/CartDrawer';
+import { AuthModal } from '@/components/AuthModal';
+import { Product, CartItem } from '@/types';
+import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchAllOrders, updateOrderStatus, submitOrder } from '@/lib/api';
+import { Plus, Edit2, Trash2, Package, RefreshCw, Layers } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+
+interface UserSession {
+  name: string;
+  email: string;
+}
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'products' | 'orders'>('products');
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   // Modal State for Create/Edit Product
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,6 +43,18 @@ export default function AdminPage() {
   });
 
   useEffect(() => {
+    // Load cart
+    const savedCart = localStorage.getItem('next_teahouse_cart');
+    if (savedCart) {
+      try { setCart(JSON.parse(savedCart)); } catch (e) {}
+    }
+
+    // Load user session
+    const savedUser = localStorage.getItem('next_teahouse_user');
+    if (savedUser) {
+      try { setCurrentUser(JSON.parse(savedUser)); } catch (e) {}
+    }
+
     loadAdminData();
   }, []);
 
@@ -46,6 +70,47 @@ export default function AdminPage() {
       setLoading(false);
     }
   }
+
+  const saveCart = (newCart: CartItem[]) => {
+    setCart(newCart);
+    localStorage.setItem('next_teahouse_cart', JSON.stringify(newCart));
+  };
+
+  const handleUpdateQuantity = (id: string, delta: number) => {
+    const updatedCart = cart
+      .map((item) => {
+        if (item.id === id) {
+          const newQty = item.quantity + delta;
+          return newQty > 0 ? { ...item, quantity: newQty } : null;
+        }
+        return item;
+      })
+      .filter(Boolean) as CartItem[];
+    saveCart(updatedCart);
+  };
+
+  const handleRemoveCartItem = (id: string) => {
+    const updatedCart = cart.filter((item) => item.id !== id);
+    saveCart(updatedCart);
+  };
+
+  const handleCheckout = async () => {
+    if (cart.length === 0) return;
+    const email = currentUser ? currentUser.email : 'admin@teahouse.com';
+    const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    await submitOrder({
+      customerName: currentUser ? currentUser.name : 'Admin User',
+      customerEmail: email,
+      items: cart,
+      totalAmount
+    });
+
+    toast.success('🎉 Order placed successfully!');
+    saveCart([]);
+    setIsCartOpen(false);
+    loadAdminData();
+  };
 
   const handleOpenCreate = () => {
     setEditingId(null);
@@ -100,7 +165,7 @@ export default function AdminPage() {
 
     try {
       if (editingId) {
-        const updated = await updateProduct(editingId, payload);
+        await updateProduct(editingId, payload);
         toast.success('🎉 Product updated!');
         setProducts(products.map(p => ((p._id || String(p.id)) === editingId ? { ...p, ...payload } : p)));
       } else {
@@ -124,10 +189,17 @@ export default function AdminPage() {
     }
   };
 
+  const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gray-50">
       <div>
-        <Navbar currentUser={null} cartCount={0} onOpenCart={() => {}} onOpenAuth={() => {}} />
+        <Navbar
+          cartCount={totalCartCount}
+          currentUser={currentUser}
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenAuth={() => setIsAuthOpen(true)}
+        />
 
         <main className="w-11/12 max-w-7xl mx-auto py-12">
           
@@ -368,6 +440,30 @@ export default function AdminPage() {
       )}
 
       <Footer />
+
+      {/* Cart & Auth Modals */}
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cart={cart}
+        onUpdateQuantity={handleUpdateQuantity}
+        onRemoveItem={handleRemoveCartItem}
+        onCheckout={handleCheckout}
+      />
+
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        currentUser={currentUser}
+        onLoginSuccess={(user) => {
+          setCurrentUser(user);
+          localStorage.setItem('next_teahouse_user', JSON.stringify(user));
+        }}
+        onLogoutSuccess={() => {
+          setCurrentUser(null);
+          localStorage.removeItem('next_teahouse_user');
+        }}
+      />
     </div>
   );
 }

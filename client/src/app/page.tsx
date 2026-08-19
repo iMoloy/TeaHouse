@@ -138,14 +138,16 @@ export default function Home() {
   const handleCheckout = async () => {
     if (cart.length === 0) return;
 
+    const email = currentUser ? currentUser.email : 'guest@teahouse.com';
     const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     await submitOrder({
       customerName: currentUser ? currentUser.name : 'Valued Guest',
-      customerEmail: currentUser ? currentUser.email : 'guest@teahouse.com',
+      customerEmail: email,
       items: cart,
       totalAmount
     });
 
+    localStorage.setItem('last_order_email', email);
     toast.success('🎉 Thank you! Your Tea House order has been placed successfully.');
     saveCart([]);
     setIsCartOpen(false);
@@ -162,7 +164,6 @@ export default function Home() {
           currentUser={currentUser}
           onOpenCart={() => {
             setIsCartOpen(true);
-            toast.info("Opened Shopping Bag");
           }}
           onOpenAuth={() => {
             setIsAuthOpen(true);
