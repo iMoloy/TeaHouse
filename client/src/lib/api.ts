@@ -1,6 +1,6 @@
 import { Product, Review, News } from '@/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://teahouse-s1zl.onrender.com/api';
 
 export async function fetchProducts(category?: string, search?: string): Promise<Product[]> {
   try {
