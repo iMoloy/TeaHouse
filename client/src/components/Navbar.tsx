@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ShoppingBag, Menu, X, User, Coffee } from 'lucide-react';
+import { ShoppingBag, Menu, X, User, Coffee, ShieldCheck, Package } from 'lucide-react';
 
 interface UserSession {
   name: string;
@@ -100,6 +100,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">About Us</Link>
           <Link href="/faqs" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">FAQs</Link>
           <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Contact</Link>
+
+          <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
+            <Link href="/my-orders" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-sm font-bold text-gray-800 hover:text-orange-600">
+              <Package className="w-4 h-4 text-orange-500" /> My Orders History
+            </Link>
+            <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 text-sm font-bold text-gray-800 hover:text-orange-600">
+              <ShieldCheck className="w-4 h-4 text-amber-500" /> Admin Dashboard
+            </Link>
+          </div>
         </div>
       )}
     </header>
