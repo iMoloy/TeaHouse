@@ -101,4 +101,37 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 });
 
+// POST Create New Product (Admin)
+router.post('/', async (req: Request, res: Response) => {
+  try {
+    const newProduct = new Product(req.body);
+    const saved = await newProduct.save();
+    return res.status(201).json(saved);
+  } catch (error) {
+    return res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+// PUT Update Product by ID (Admin)
+router.put('/:id', async (req: Request, res: Response) => {
+  try {
+    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ message: 'Product not found' });
+    return res.json(updated);
+  } catch (error) {
+    return res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+// DELETE Product by ID (Admin)
+router.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const deleted = await Product.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ message: 'Product not found' });
+    return res.json({ message: 'Product deleted successfully', id: req.params.id });
+  } catch (error) {
+    return res.status(500).json({ error: (error as Error).message });
+  }
+});
+
 export default router;

@@ -30,11 +30,36 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// GET All Orders (Admin or User history)
+// GET All Orders (Admin)
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 }).exec();
     return res.json(orders);
+  } catch (error) {
+    return res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+// GET Orders by User Email (User History)
+router.get('/user/:email', async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find({ customerEmail: req.params.email }).sort({ createdAt: -1 }).exec();
+    return res.json(orders);
+  } catch (error) {
+    return res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+// PATCH Update Order Status (Admin)
+router.patch('/:id/status', async (req: Request, res: Response) => {
+  try {
+    const { status } = req.body;
+    if (!status) return res.status(400).json({ error: 'Status is required' });
+
+    const updated = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    if (!updated) return res.status(404).json({ error: 'Order not found' });
+
+    return res.json({ message: 'Order status updated', order: updated });
   } catch (error) {
     return res.status(500).json({ error: (error as Error).message });
   }
