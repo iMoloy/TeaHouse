@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { authClient } from '@/lib/auth-client';
-import { X, Mail, Lock, User, LogOut, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { X, Mail, Lock, User, LogOut, CheckCircle2, ShieldCheck, Package, Shield } from 'lucide-react';
+import Link from 'next/link';
 import { toast } from 'react-toastify';
 
 interface UserSession {
@@ -85,18 +86,39 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
         {currentUser ? (
           /* ================= USER PROFILE VIEW ================= */
-          <div className="text-center py-4 space-y-6">
+          <div className="text-center py-2 space-y-5">
             <div className="relative w-20 h-20 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white text-3xl font-extrabold mx-auto shadow-lg">
               {currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
               <span className="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full" title="Online" />
             </div>
 
             <div>
-              <div className="inline-flex items-center gap-1 bg-amber-100 text-amber-800 text-xs font-extrabold px-3 py-1 rounded-full mb-2">
+              <div className="inline-flex items-center gap-1 bg-amber-100 text-amber-800 text-xs font-extrabold px-3 py-1 rounded-full mb-1">
                 <ShieldCheck className="w-3.5 h-3.5" /> Gold Tea Club Member
               </div>
               <h3 className="text-2xl font-extrabold text-gray-900">{currentUser.name}</h3>
               <p className="text-gray-500 text-sm">{currentUser.email}</p>
+            </div>
+
+            {/* Quick Navigation Links inside Profile */}
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <Link
+                href="/my-orders"
+                onClick={onClose}
+                className="flex flex-col items-center justify-center p-3 rounded-2xl bg-orange-50 hover:bg-orange-100 border border-orange-100 text-orange-700 transition font-bold text-xs gap-1.5"
+              >
+                <Package className="w-5 h-5 text-orange-600" />
+                <span>My Orders</span>
+              </Link>
+
+              <Link
+                href="/admin"
+                onClick={onClose}
+                className="flex flex-col items-center justify-center p-3 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-100 text-amber-800 transition font-bold text-xs gap-1.5"
+              >
+                <Shield className="w-5 h-5 text-amber-600" />
+                <span>Admin Panel</span>
+              </Link>
             </div>
 
             <div className="bg-gray-50 rounded-2xl p-4 text-left space-y-2 text-xs text-gray-600">
