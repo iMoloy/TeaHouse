@@ -13,6 +13,7 @@ import { NewsSection } from '@/components/NewsSection';
 import { Footer } from '@/components/Footer';
 import { CartDrawer } from '@/components/CartDrawer';
 import { AuthModal } from '@/components/AuthModal';
+import { WriteReviewModal } from '@/components/WriteReviewModal';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { toast } from 'react-toastify';
 
@@ -32,6 +33,7 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
 
   useEffect(() => {
     // Load saved cart
@@ -51,26 +53,26 @@ export default function Home() {
     }
 
     // Fetch dynamic data with loading indicator
-    async function loadData() {
-      setIsLoading(true);
-      try {
-        const [prodsData, revsData, newsData] = await Promise.all([
-          fetchProducts(),
-          fetchReviews(),
-          fetchNews()
-        ]);
-        setProducts(prodsData);
-        setReviews(revsData);
-        setNewsList(newsData);
-      } catch (err) {
-        toast.error('⚠️ Could not connect to live database. Loaded local backup menu.');
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
     loadData();
   }, []);
+
+  async function loadData() {
+    setIsLoading(true);
+    try {
+      const [prodsData, revsData, newsData] = await Promise.all([
+        fetchProducts(),
+        fetchReviews(),
+        fetchNews()
+      ]);
+      setProducts(prodsData);
+      setReviews(revsData);
+      setNewsList(newsData);
+    } catch (err) {
+      toast.error('⚠️ Could not connect to live database. Loaded local backup menu.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const saveCart = (newCart: CartItem[]) => {
     setCart(newCart);
@@ -190,7 +192,10 @@ export default function Home() {
               <LoadingSpinner message="Loading client reviews..." size="md" />
             </div>
           ) : (
-            <SuperClients reviews={reviews} />
+            <SuperClients
+              reviews={reviews}
+              onOpenWriteReview={() => setIsWriteReviewOpen(true)}
+            />
           )}
 
           {isLoading ? (
@@ -233,6 +238,12 @@ export default function Home() {
           setCurrentUser(null);
           localStorage.removeItem('next_teahouse_user');
         }}
+      />
+
+      <WriteReviewModal
+        isOpen={isWriteReviewOpen}
+        onClose={() => setIsWriteReviewOpen(false)}
+        onReviewAdded={loadData}
       />
 
     </div>

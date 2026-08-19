@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ShoppingBag, Menu, X, User, Coffee } from 'lucide-react';
+import { ShoppingBag, Menu, X, User, Coffee, Package, Shield } from 'lucide-react';
 
 interface UserSession {
   name: string;
@@ -37,12 +37,18 @@ export const Navbar: React.FC<NavbarProps> = ({
         </Link>
 
         {/* Desktop Links */}
-        <nav className="hidden md:flex items-center gap-8 font-semibold text-sm text-gray-600">
+        <nav className="hidden md:flex items-center gap-7 font-semibold text-sm text-gray-600">
           <Link href="/" className="hover:text-orange-600 transition">Home</Link>
           <Link href="/products" className="hover:text-orange-600 transition">Products</Link>
+          <Link href="/my-orders" className="hover:text-orange-600 transition flex items-center gap-1">
+            <Package className="w-3.5 h-3.5 text-orange-500" /> My Orders
+          </Link>
           <Link href="/about" className="hover:text-orange-600 transition">About Us</Link>
           <Link href="/faqs" className="hover:text-orange-600 transition">FAQs</Link>
           <Link href="/contact" className="hover:text-orange-600 transition">Contact</Link>
+          <Link href="/admin" className="hover:text-orange-600 transition flex items-center gap-1 text-xs bg-amber-100 text-amber-900 font-bold px-2.5 py-1 rounded-full">
+            <Shield className="w-3 h-3 text-amber-600" /> Admin
+          </Link>
         </nav>
 
         {/* Action Buttons */}
@@ -97,9 +103,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4 space-y-3 font-semibold text-gray-700">
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Home</Link>
           <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Products</Link>
+          <Link href="/my-orders" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">My Orders</Link>
           <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">About Us</Link>
           <Link href="/faqs" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">FAQs</Link>
           <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block hover:text-orange-600">Contact</Link>
+          <Link href="/admin" onClick={() => setIsMobileMenuOpen(false)} className="block text-amber-700 font-bold">Admin Panel</Link>
         </div>
       )}
     </header>

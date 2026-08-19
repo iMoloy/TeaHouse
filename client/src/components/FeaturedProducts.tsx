@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Product } from '@/types';
-import { Search, Star, Eye, Plus } from 'lucide-react';
+import { Search, Star, Eye, Plus, Heart } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { ProductSkeletonGrid } from './LoadingSpinner';
 
@@ -21,6 +21,29 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({
 }) => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [favorites, setFavorites] = useState<string[]>([]);
+
+  useEffect(() => {
+    const savedFavs = localStorage.getItem('teahouse_favorites');
+    if (savedFavs) {
+      try {
+        setFavorites(JSON.parse(savedFavs));
+      } catch (e) {}
+    }
+  }, []);
+
+  const toggleFavorite = (pId: string, pName: string) => {
+    let updated: string[];
+    if (favorites.includes(pId)) {
+      updated = favorites.filter(id => id !== pId);
+      toast.warn(`Removed "${pName}" from favorites.`);
+    } else {
+      updated = [...favorites, pId];
+      toast.success(`❤️ Added "${pName}" to favorites!`);
+    }
+    setFavorites(updated);
+    localStorage.setItem('teahouse_favorites', JSON.stringify(updated));
+  };
 
   const handleCategoryChange = (cat: string, label: string) => {
     setActiveCategory(cat);
@@ -28,7 +51,14 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({
   };
 
   const filteredProducts = products.filter(product => {
-    const matchesCategory = activeCategory === 'all' || product.category === activeCategory;
+    const pId = product._id || String(product.id);
+    const matchesCategory =
+      activeCategory === 'all'
+        ? true
+        : activeCategory === 'favorites'
+        ? favorites.includes(pId)
+        : product.category === activeCategory;
+
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           product.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -40,7 +70,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({
       <div className="text-center max-w-2xl mx-auto mb-10">
         <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Our Featured Products</h2>
         <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
-          There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words.
+          Handcrafted organic teas sourced directly from high-altitude tea gardens around the world.
         </p>
       </div>
 
@@ -49,6 +79,7 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({
         <div className="flex flex-wrap justify-center gap-2">
           {[
             { id: 'all', label: 'All Teas' },
+            { id: 'favorites', label: `❤️ Favorites (${favorites.length})` },
             { id: 'milk-tea', label: 'Milk Tea' },
             { id: 'black-tea', label: 'Black Tea' },
             { id: 'lemon-tea', label: 'Lemon Tea' },
@@ -93,48 +124,62 @@ export const FeaturedProducts: React.FC<FeaturedProductsProps> = ({
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((product) => (
-            <div key={product._id || product.id} className="bg-white rounded-3xl p-6 text-center shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between group border border-gray-100">
-              <div className="relative bg-gray-50 rounded-2xl p-6 mb-5 overflow-hidden flex items-center justify-center min-h-[200px]">
-                <span className="absolute top-3 left-3 bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  {product.rating}
-                </span>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-36 h-36 object-contain transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
+          {filteredProducts.map((product) => {
+            const pId = product._id || String(product.id);
+            const isFav = favorites.includes(pId);
 
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-4">{product.description}</p>
-              </div>
+            return (
+              <div key={pId} className="bg-white rounded-3xl p-6 text-center shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between group border border-gray-100 relative">
+                <div className="relative bg-gray-50 rounded-2xl p-6 mb-5 overflow-hidden flex items-center justify-center min-h-[200px]">
+                  <span className="absolute top-3 left-3 bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                    <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                    {product.rating}
+                  </span>
 
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                <span className="text-2xl font-extrabold text-orange-600">${product.price.toFixed(2)}</span>
-                <div className="flex gap-2">
                   <button
-                    onClick={() => {
-                      onSelectProduct(product);
-                      toast.info(`Viewing details for ${product.name}`);
-                    }}
-                    className="p-2.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition"
-                    title="Quick View"
+                    onClick={() => toggleFavorite(pId, product.name)}
+                    className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white text-gray-400 hover:text-red-500 shadow-sm transition"
+                    title={isFav ? 'Remove from favorites' : 'Add to favorites'}
                   >
-                    <Eye className="w-4 h-4" />
+                    <Heart className={`w-4 h-4 ${isFav ? 'fill-red-500 text-red-500' : ''}`} />
                   </button>
-                  <button
-                    onClick={() => onAddToCart(product)}
-                    className="btn-gradient px-4 py-2 rounded-full font-semibold text-sm flex items-center gap-1 shadow"
-                  >
-                    <Plus className="w-4 h-4" /> Add
-                  </button>
+
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-36 h-36 object-contain transition-transform duration-300 group-hover:scale-110"
+                  />
+                </div>
+
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{product.name}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed mb-4">{product.description}</p>
+                </div>
+
+                <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                  <span className="text-2xl font-extrabold text-orange-600">${product.price.toFixed(2)}</span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        onSelectProduct(product);
+                        toast.info(`Viewing details for ${product.name}`);
+                      }}
+                      className="p-2.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 transition"
+                      title="Quick View"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => onAddToCart(product)}
+                      className="btn-gradient px-4 py-2 rounded-full font-semibold text-sm flex items-center gap-1 shadow"
+                    >
+                      <Plus className="w-4 h-4" /> Add
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

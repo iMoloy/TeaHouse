@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Review } from '@/types';
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Star, PlusCircle } from 'lucide-react';
 
 interface SuperClientsProps {
   reviews: Review[];
+  onOpenWriteReview?: () => void;
 }
 
-export const SuperClients: React.FC<SuperClientsProps> = ({ reviews }) => {
+export const SuperClients: React.FC<SuperClientsProps> = ({ reviews, onOpenWriteReview }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -31,19 +32,27 @@ export const SuperClients: React.FC<SuperClientsProps> = ({ reviews }) => {
           Meet Our Super <br className="hidden lg:inline" />Clients
         </h2>
         <p className="text-white/80 text-sm sm:text-base leading-relaxed max-w-md mx-auto lg:mx-0">
-          There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.
+          Discover why thousands of tea enthusiasts across the globe love our organic teas and fast delivery.
         </p>
-        <div>
+        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
           <a href="#featured-products" className="inline-block bg-white text-orange-600 font-bold px-8 py-3.5 rounded-full shadow-lg hover:bg-gray-100 transition">
             Show All
           </a>
+          {onOpenWriteReview && (
+            <button
+              onClick={onOpenWriteReview}
+              className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white font-bold px-6 py-3.5 rounded-full backdrop-blur-xs transition"
+            >
+              <PlusCircle className="w-4 h-4" /> Write a Review
+            </button>
+          )}
         </div>
       </div>
 
       <div className="relative z-10">
         <div className="relative bg-white rounded-3xl p-8 md:p-10 shadow-2xl max-w-xl mx-auto border border-gray-100 text-gray-900 transition-all duration-300">
           <div className="absolute -top-6 -left-6 bg-white p-3 rounded-2xl shadow-md border border-gray-100">
-            <img src={current.avatar} alt={current.name} className="w-14 h-14 rounded-full object-cover border-2 border-orange-500" />
+            <img src={current.avatar || '/images/client.png'} alt={current.name} className="w-14 h-14 rounded-full object-cover border-2 border-orange-500" />
           </div>
 
           <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 pt-4 italic">

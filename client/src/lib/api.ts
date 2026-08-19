@@ -66,6 +66,33 @@ export async function fetchProducts(category?: string, search?: string): Promise
   }
 }
 
+export async function createProduct(productData: Partial<Product>): Promise<Product> {
+  const res = await fetch(`${API_BASE_URL}/products`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(productData)
+  });
+  if (!res.ok) throw new Error('Failed to create product');
+  return res.json();
+}
+
+export async function updateProduct(id: string, productData: Partial<Product>): Promise<Product> {
+  const res = await fetch(`${API_BASE_URL}/products/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(productData)
+  });
+  if (!res.ok) throw new Error('Failed to update product');
+  return res.json();
+}
+
+export async function deleteProduct(id: string): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/products/${id}`, {
+    method: 'DELETE'
+  });
+  if (!res.ok) throw new Error('Failed to delete product');
+}
+
 export async function fetchReviews(): Promise<Review[]> {
   try {
     const res = await fetch(`${API_BASE_URL}/reviews`);
@@ -91,6 +118,16 @@ export async function fetchReviews(): Promise<Review[]> {
       }
     ];
   }
+}
+
+export async function submitReview(reviewData: { name: string; role?: string; comment: string; rating: number }): Promise<Review> {
+  const res = await fetch(`${API_BASE_URL}/reviews`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(reviewData)
+  });
+  if (!res.ok) throw new Error('Failed to submit review');
+  return res.json();
 }
 
 export async function fetchNews(): Promise<News[]> {
@@ -142,4 +179,34 @@ export async function submitOrder(orderData: any) {
   } catch (error) {
     return { success: true, message: 'Order submitted locally' };
   }
+}
+
+export async function fetchAllOrders(): Promise<any[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/orders`);
+    if (!res.ok) throw new Error('Failed to fetch orders');
+    return res.json();
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function fetchUserOrders(email: string): Promise<any[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/orders/user/${encodeURIComponent(email)}`);
+    if (!res.ok) throw new Error('Failed to fetch user orders');
+    return res.json();
+  } catch (error) {
+    return [];
+  }
+}
+
+export async function updateOrderStatus(orderId: string, status: string): Promise<any> {
+  const res = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status })
+  });
+  if (!res.ok) throw new Error('Failed to update status');
+  return res.json();
 }
