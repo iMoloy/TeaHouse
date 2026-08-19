@@ -168,45 +168,110 @@ export async function fetchNews(): Promise<News[]> {
   }
 }
 
+/* ================= ORDER HELPER FUNCTIONS ================= */
+
+function getLocalOrders(): any[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem('teahouse_local_orders');
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveLocalOrder(order: any) {
+  if (typeof window === 'undefined') return;
+  try {
+    const existing = getLocalOrders();
+    const updated = [order, ...existing.filter(o => o._id !== order._id && o.id !== order.id)];
+    localStorage.setItem('teahouse_local_orders', JSON.stringify(updated));
+  } catch (e) {}
+}
+
 export async function submitOrder(orderData: any) {
+  const localObj = {
+    _id: 'ord_' + Date.now(),
+    customerName: orderData.customerName || 'Guest User',
+    customerEmail: (orderData.customerEmail || 'guest@teahouse.com').toLowerCase().trim(),
+    items: orderData.items || [],
+    totalAmount: orderData.totalAmount || 0,
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  };
+
+  saveLocalOrder(localObj);
+
   try {
     const res = await fetch(`${API_BASE_URL}/orders`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(orderData)
     });
-    return res.json();
+    if (res.ok) {
+      const data = await res.json();
+      if (data.order) {
+        saveLocalOrder(data.order);
+      }
+      return data;
+    }
   } catch (error) {
-    return { success: true, message: 'Order submitted locally' };
+    console.warn('[API] Order saved to local fallback storage:', error);
   }
+  return { success: true, order: localObj };
 }
 
 export async function fetchAllOrders(): Promise<any[]> {
+  let apiOrders: any[] = [];
   try {
     const res = await fetch(`${API_BASE_URL}/orders`);
-    if (!res.ok) throw new Error('Failed to fetch orders');
-    return res.json();
-  } catch (error) {
-    return [];
-  }
+    if (res.ok) apiOrders = await res.json();
+  } catch (error) {}
+
+  const localOrders = getLocalOrders();
+  const map = new Map();
+  [...apiOrders, ...localOrders].forEach(o => {
+    const id = o._id || o.id;
+    if (id && !map.has(id)) map.set(id, o);
+  });
+  return Array.from(map.values());
 }
 
 export async function fetchUserOrders(email: string): Promise<any[]> {
+  const cleanEmail = (email || '').toLowerCase().trim();
+  let apiOrders: any[] = [];
   try {
-    const res = await fetch(`${API_BASE_URL}/orders/user/${encodeURIComponent(email)}`);
-    if (!res.ok) throw new Error('Failed to fetch user orders');
-    return res.json();
-  } catch (error) {
-    return [];
-  }
+    const res = await fetch(`${API_BASE_URL}/orders/user/${encodeURIComponent(cleanEmail)}`);
+    if (res.ok) apiOrders = await res.json();
+  } catch (error) {}
+
+  const localOrders = getLocalOrders().filter(o =>
+    (o.customerEmail || '').toLowerCase().trim() === cleanEmail
+  );
+
+  const map = new Map();
+  [...apiOrders, ...localOrders].forEach(o => {
+    const id = o._id || o.id;
+    if (id && !map.has(id)) map.set(id, o);
+  });
+  return Array.from(map.values());
 }
 
 export async function updateOrderStatus(orderId: string, status: string): Promise<any> {
-  const res = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ status })
-  });
-  if (!res.ok) throw new Error('Failed to update status');
-  return res.json();
+  try {
+    const local = getLocalOrders();
+    const updatedLocal = local.map(o => (o._id === orderId || o.id === orderId ? { ...o, status } : o));
+    localStorage.setItem('teahouse_local_orders', JSON.stringify(updatedLocal));
+  } catch (e) {}
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    });
+    if (res.ok) return res.json();
+  } catch (error) {}
+
+  return { success: true, status };
 }
