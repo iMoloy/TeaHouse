@@ -14,7 +14,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     const order = await Order.create({
       customerName,
-      customerEmail,
+      customerEmail: String(customerEmail).toLowerCase().trim(),
       items,
       totalAmount,
       status: 'pending'
@@ -43,7 +43,10 @@ router.get('/', async (_req: Request, res: Response) => {
 // GET Orders by User Email (User History)
 router.get('/user/:email', async (req: Request, res: Response) => {
   try {
-    const orders = await Order.find({ customerEmail: req.params.email }).sort({ createdAt: -1 }).exec();
+    const cleanEmail = String(req.params.email).toLowerCase().trim();
+    const orders = await Order.find({
+      customerEmail: { $regex: new RegExp(`^${cleanEmail}$`, 'i') }
+    }).sort({ createdAt: -1 }).exec();
     return res.json(orders);
   } catch (error) {
     return res.status(500).json({ error: (error as Error).message });
