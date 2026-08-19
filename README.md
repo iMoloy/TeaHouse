@@ -6,7 +6,8 @@
 [![Express](https://img.shields.io/badge/Express-4.21-000000?logo=express)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-8.10-47A248?logo=mongodb)](https://www.mongodb.com/)
 [![Better Auth](https://img.shields.io/badge/Better--Auth-1.1-orange)](https://better-auth.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Deploy_Client-Vercel-black?logo=vercel)](https://vercel.com/)
+[![Render](https://img.shields.io/badge/Deploy_Server-Render-46E3B7?logo=render)](https://render.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![AI Generated](https://img.shields.io/badge/Built_With-Antigravity_AI-purple)](https://deepmind.google/)
 
@@ -14,8 +15,9 @@ A modern, 100% dynamic, full-stack tea shop landing page and e-commerce applicat
 
 > 🤖 **AI Assistance Disclaimer**: This project was fully architected, designed, and implemented using **Google DeepMind Antigravity AI** as an autonomous AI pair programmer.
 > 
-> 📋 **Project Links**:
-> - [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) - Step-by-Step Architecture & Roadmap Plan
+> 📋 **Project Documentation**:
+> - [DEPLOYMENT.md](./DEPLOYMENT.md) - Step-by-Step Vercel & Render Deployment Guide
+> - [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) - Full-Stack Architecture & Roadmap Plan
 > - [ANTIGRAVITY.md](./ANTIGRAVITY.md) / [CLAUDE.md](./CLAUDE.md) - AI Agent Guidelines & Coding Standards
 > - [LICENSE](./LICENSE) - Open Source MIT License
 
@@ -41,6 +43,7 @@ A modern, 100% dynamic, full-stack tea shop landing page and e-commerce applicat
 TeaHouse/
 ├── ANTIGRAVITY.md               # AI Agent Guidelines & Coding Standards
 ├── CLAUDE.md                    # Alias AI Rules File
+├── DEPLOYMENT.md               # Detailed Vercel & Render Deployment Guide
 ├── IMPLEMENTATION_PLAN.md      # Detailed Step-by-Step AI Architecture Plan
 ├── LICENSE                     # Open Source MIT License
 ├── README.md                   # Project Documentation & Badges
@@ -52,6 +55,7 @@ TeaHouse/
 │   │   ├── lib/                # REST API Client & Better Auth Client SDK
 │   │   └── types/              # TypeScript Interfaces
 │   ├── public/images/          # High-resolution Tea House assets
+│   ├── vercel.json             # Vercel Deployment Configuration
 │   ├── .env.example
 │   ├── package.json
 │   └── tsconfig.json
@@ -64,6 +68,7 @@ TeaHouse/
     │   ├── routes/             # REST API Routes (/api/products, /api/reviews, /api/news, /api/orders)
     │   ├── index.ts            # Server Entry Point
     │   └── seed.ts             # Database Seeding Script
+    ├── render.yaml             # Render Deployment Blueprint
     ├── .env.example
     ├── package.json
     └── tsconfig.json
@@ -73,7 +78,7 @@ TeaHouse/
 
 ## 🛠️ Environment Variables Setup
 
-Create a `.env` file in the root and in `server/` based on `.env.example`:
+Create a `.env` file in `server/` and `.env.local` in `client/` based on `.env.example`:
 
 ### `server/.env`
 ```env
@@ -92,60 +97,9 @@ NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:5000
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Deployment Instructions
 
-### 1. Clone & Install Dependencies
-
-```bash
-# Clone the repository
-git clone https://github.com/iMoloy/TeaHouse.git
-cd TeaHouse
-
-# Install Server Dependencies
-cd server
-npm install
-
-# Install Client Dependencies
-cd ../client
-npm install
-```
-
-### 2. Seed Database (Optional)
-
-```bash
-cd server
-npm run seed
-```
-
-### 3. Run Development Servers
-
-**Run Express Backend Server:**
-```bash
-cd server
-npm run dev
-# Server running at http://localhost:5000
-```
-
-**Run Next.js Client Application:**
-```bash
-cd client
-npm run dev
-# App running at http://localhost:3000
-```
-
----
-
-## 🔗 REST API Endpoints
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/products` | Get all products (supports `?category=` & `?search=`) |
-| `GET` | `/api/products/:id` | Get single product by ID |
-| `GET` | `/api/reviews` | Get all client testimonials |
-| `POST` | `/api/reviews` | Submit new client review |
-| `GET` | `/api/news` | Get news stories & articles |
-| `POST` | `/api/orders` | Place a new cart order |
-| `ALL` | `/api/auth/*` | Better Auth authentication endpoints |
+For complete step-by-step instructions on deploying the client to **Vercel** and the backend server to **Render**, please refer to the **[DEPLOYMENT.md](./DEPLOYMENT.md)** guide.
 
 ---
 
