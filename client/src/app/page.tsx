@@ -14,8 +14,11 @@ import { Footer } from '@/components/Footer';
 import { CartDrawer } from '@/components/CartDrawer';
 import { AuthModal } from '@/components/AuthModal';
 import { WriteReviewModal } from '@/components/WriteReviewModal';
+import { TeaSommelierModal } from '@/components/TeaSommelierModal';
+import { SteepTimerModal } from '@/components/SteepTimerModal';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import { toast } from 'react-toastify';
+import { Sparkles, Clock } from 'lucide-react';
 
 interface UserSession {
   name: string;
@@ -31,9 +34,15 @@ export default function Home() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [currentUser, setCurrentUser] = useState<UserSession | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isWriteReviewOpen, setIsWriteReviewOpen] = useState(false);
+  
+  // Interactive AI & Tea Master Modals
+  const [isSommelierOpen, setIsSommelierOpen] = useState(false);
+  const [isTimerOpen, setIsTimerOpen] = useState(false);
+  const [timerPreset, setTimerPreset] = useState<{ teaName: string; minutes: number; tempC: number } | null>(null);
 
   useEffect(() => {
     // Load saved cart
@@ -153,6 +162,11 @@ export default function Home() {
     setIsCartOpen(false);
   };
 
+  const handleOpenSteepTimerForTea = (teaName: string, minutes: number, tempC: number) => {
+    setTimerPreset({ teaName, minutes, tempC });
+    setIsTimerOpen(true);
+  };
+
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -162,16 +176,17 @@ export default function Home() {
         <Navbar
           cartCount={totalCartCount}
           currentUser={currentUser}
-          onOpenCart={() => {
-            setIsCartOpen(true);
-          }}
-          onOpenAuth={() => {
-            setIsAuthOpen(true);
-          }}
+          onOpenCart={() => setIsCartOpen(true)}
+          onOpenAuth={() => setIsAuthOpen(true)}
+          onOpenSommelier={() => setIsSommelierOpen(true)}
+          onOpenTimer={() => setIsTimerOpen(true)}
         />
 
         <main>
-          <Hero />
+          <Hero
+            onOpenSommelier={() => setIsSommelierOpen(true)}
+            onOpenTimer={() => setIsTimerOpen(true)}
+          />
           
           {isLoading ? (
             <div className="py-20">
@@ -211,11 +226,33 @@ export default function Home() {
 
       <Footer />
 
+      {/* Floating Quick Dock (Bottom Right) */}
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2.5">
+        <button
+          onClick={() => setIsTimerOpen(true)}
+          className="bg-white/90 hover:bg-white text-gray-800 hover:text-amber-600 border border-amber-200/80 p-3 rounded-full shadow-lg backdrop-blur-md transition-all hover:scale-105 flex items-center gap-2 group"
+          title="Open Steep Timer"
+        >
+          <Clock className="w-5 h-5 text-amber-500" />
+          <span className="hidden sm:inline text-xs font-bold pr-1">Brew Timer</span>
+        </button>
+
+        <button
+          onClick={() => setIsSommelierOpen(true)}
+          className="bg-gradient-to-r from-orange-500 to-red-600 text-white p-3.5 rounded-full shadow-xl transition-all hover:scale-105 flex items-center gap-2 group"
+          title="Ask AI Tea Sommelier"
+        >
+          <Sparkles className="w-5 h-5 animate-pulse" />
+          <span className="hidden sm:inline text-xs font-black pr-1 tracking-wide">AI Sommelier</span>
+        </button>
+      </div>
+
       {/* Modals & Drawers */}
       <ProductModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
         onAddToCart={handleAddToCart}
+        onOpenSteepTimer={handleOpenSteepTimerForTea}
       />
 
       <CartDrawer
@@ -245,6 +282,25 @@ export default function Home() {
         isOpen={isWriteReviewOpen}
         onClose={() => setIsWriteReviewOpen(false)}
         onReviewAdded={loadData}
+      />
+
+      <TeaSommelierModal
+        isOpen={isSommelierOpen}
+        onClose={() => setIsSommelierOpen(false)}
+        products={products}
+        onAddToCart={handleAddToCart}
+        onOpenTimerForTea={handleOpenSteepTimerForTea}
+      />
+
+      <SteepTimerModal
+        isOpen={isTimerOpen}
+        onClose={() => {
+          setIsTimerOpen(false);
+          setTimerPreset(null);
+        }}
+        initialTeaName={timerPreset?.teaName}
+        initialMinutes={timerPreset?.minutes}
+        initialTempC={timerPreset?.tempC}
       />
 
     </div>
